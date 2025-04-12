@@ -6,7 +6,7 @@ export function NavbarLoggedOut() {
     <header className="bg-gray-200 shadow-md">
       <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <div className="text-xl font-bold text-gray-800">
-          <NavLink to="/" className="hover:text-blue-600 transition">MainPage</NavLink>
+          <NavLink to="/" className="hover:text-blue-600 transition">SalesFlowStorage</NavLink>
         </div>
         <div className="flex gap-6">
           <NavLink
@@ -16,7 +16,7 @@ export function NavbarLoggedOut() {
               }`
             }
           >
-            Home
+            Página Principal
           </NavLink>
           <NavLink
             to="/login"
@@ -25,7 +25,7 @@ export function NavbarLoggedOut() {
               }`
             }
           >
-            Login
+            Ingresar
           </NavLink>
           <NavLink
             to="/register"
@@ -34,7 +34,7 @@ export function NavbarLoggedOut() {
               }`
             }
           >
-            Register
+            Registrarse
           </NavLink>
         </div>
       </nav>

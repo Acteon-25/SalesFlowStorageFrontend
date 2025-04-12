@@ -16,7 +16,6 @@ export function UserContextProvider({ children }) {
         const response = await profile()
         setUser(response);
       } catch (error) {
-        console.error("No autenticado:", error);
       }
     }
 
@@ -24,8 +23,8 @@ export function UserContextProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, updateUser }}>
+    <UserContext value={{ user, updateUser }}>
       {children}
-    </UserContext.Provider>
+    </UserContext>
   );
 }

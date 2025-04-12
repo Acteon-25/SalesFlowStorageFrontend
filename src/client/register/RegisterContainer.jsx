@@ -1,5 +1,6 @@
 import { useActionState, useState } from "react"
 import { register } from "@/service/authService"
+import { InputForm } from "@/client/components/InputForm"
 
 export function RegisterContainer() {
   const [result, setResult] = useState(null)
@@ -18,7 +19,7 @@ export function RegisterContainer() {
     try {
       const error = await register(data)
       if (error) {
-        return error.message.errors
+        return error.message
       }
       setResult("Registro exitoso")
       return null
@@ -35,49 +36,41 @@ export function RegisterContainer() {
         action={submitAction}
         className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md space-y-4"
       >
-        <h2 className="text-xl font-semibold text-center text-gray-800">Registro</h2>
-        <input
+        <h2 className="text-xl font-semibold text-center text-gray-800">Bienvenido, empecemos</h2>
+
+        <InputForm
           type="text"
           name="username"
+          label="Nombre de usuario"
           disabled={isPending}
-          placeholder="Ej. MasterFire"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50"
+          required
+          error={error?.username}
         />
 
-        <input
+        <InputForm
           type="email"
           name="email"
+          label="Correo electrónico"
           disabled={isPending}
-          placeholder="Ej. masterfire@gmail.com"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50"
+          required
+          error={error?.email}
         />
 
-        <input
+        <InputForm
           type="password"
           name="password"
+          label="Contraseña"
           disabled={isPending}
-          placeholder="Ej. 123456"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50"
+          required
+          error={error?.password}
         />
 
         <button
           disabled={isPending}
           className="w-full p-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition disabled:bg-gray-400"
         >
-          {isPending ? "Registrando..." : "Register"}
+          {isPending ? "Creando cuenta..." : "Crear cuenta"}
         </button>
-
-        {error?.length > 0 && (
-          <ul className="text-red-500">
-            {error.map((er, index) => (
-              <li key={index}>❌ Error: {er}</li>
-            ))}
-          </ul>
-        )}
-
-        {error?.username && <p className="text-red-500">❌ {error.username[0]}</p>}
-        {error?.email && <p className="text-red-500">❌ {error.email[0]}</p>}
-        {error?.password && <p className="text-red-500">❌ {error.password[0]}</p>}
 
         {result && !error && <div>✔ {result}</div>}
       </form>

@@ -2,6 +2,7 @@ import { useActionState, use } from "react"
 import { useNavigate } from "react-router"
 import { login, profile } from "@/service/authService"
 import { UserContext } from "@/context/userContext"
+import { InputForm } from "@/client/components/InputForm"
 
 export function LoginContainer() {
   const navigate = useNavigate()
@@ -13,17 +14,16 @@ export function LoginContainer() {
 
     try {
       const response = await login({ email, password });
-      if (response) {
-        return response.message.errors;
+      if (response.message) {
+        return response.message;
       }
       const data = await profile();
 
-      updateUser({ user: data });
+      await updateUser({ user: { ...data } });
 
-      navigate("/dashboard");
+      await navigate("/dashboard");
       return null;
     } catch (e) {
-      console.log(e);
       return ["Error en la conexión con el servidor"];
     }
   }
@@ -36,39 +36,38 @@ export function LoginContainer() {
         action={submitAction}
         className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md space-y-4"
       >
-        <h2 className="text-xl font-semibold text-center text-gray-800">Login</h2>
+        <h2 className="text-xl font-semibold text-center text-gray-800">Accede a tu cuenta</h2>
 
-        <input
+        <InputForm
           type="email"
           name="email"
+          label="Correo electrónico"
           disabled={isPending}
-          placeholder="Ej. masterfire@gmail.com"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50"
+          required
         />
 
-        <input
+        <InputForm
           type="password"
           name="password"
+          label="Contraseña"
           disabled={isPending}
-          placeholder="Ej. 123456"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:opacity-50"
+          required
         />
 
-        <button
-          disabled={isPending}
-          className="w-full p-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition disabled:bg-gray-400"
-        >
-          {isPending ? "Ingresando..." : "Login"}
-        </button>
-
-        {error?.length > 0 && (
-          <ul className="text-red-500">
-            {error.map((er, index) => (
-              <li key={index}>❌ Error: {er}</li>
-            ))}
-          </ul>
+        {error && (
+          <div className="text-red-500 text-sm text-center">
+            {error}
+          </div>
         )}
+
+        <button
+          type="submit"
+          disabled={isPending}
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isPending ? "Iniciando sesión..." : "Iniciar sesión"}
+        </button>
       </form>
     </div>
-  )
+  );
 }

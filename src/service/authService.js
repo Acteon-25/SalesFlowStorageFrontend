@@ -17,10 +17,11 @@ export const register = async (datos) => {
 
 export const login = async (datos) => {
   try {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; 
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const response = await api.post("/auth/login", datos, {
       headers: { Timezone: timezone },
     });
+
     return response.data;
   } catch (error) {
     return manejarError(error);
@@ -50,7 +51,10 @@ export const profile = async () => {
 
 const manejarError = (error) => {
   if (error.response) {
-    return { message: error.response.data };
+    return { message: error.response.data.message };
   }
-  return { message: "Error de conexión con el servidor" };
+  if (error.request) {
+    return { message: "Error de conexión con el servidor" };
+  }
+  return { message: error.message || "Error desconocido" };
 };
